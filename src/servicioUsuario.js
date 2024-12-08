@@ -7,7 +7,7 @@ class ServicioUsuario {
       if (this.usuarios.has(nombreUsuario)) {
         throw new Error('El nombre de usuario ya existe');
       }
-      
+  
       const usuario = { nombreUsuario, correo, creadoEn: new Date() };
       this.usuarios.set(nombreUsuario, usuario);
       return usuario;
