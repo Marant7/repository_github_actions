@@ -16,6 +16,5 @@ Este repositorio demuestra herramientas y prácticas de gestión de pruebas usan
 El pipeline de GitHub Actions:
 1. Se ejecuta en push a main y pull requests
 2. Instala dependencias
-3. Ejecuta linting
 4. Ejecuta pruebas con cobertura
 5. Sube reportes de cobertura
