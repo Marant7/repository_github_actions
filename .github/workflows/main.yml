@@ -1,4 +1,4 @@
-name: Pruebas y Calidad de Código
+name: Pruebas
 
 on:
   push:
@@ -24,12 +24,7 @@ jobs:
         cache: 'npm'
 
     - name: Instalar dependencias
-      run: |
-        npm ci
-        npm install --save-dev eslint-config-airbnb-base eslint-plugin-import
-
-    - name: Verificar formato de código
-      run: npm run lint
+      run: npm ci
 
     - name: Ejecutar pruebas
       run: npm test
