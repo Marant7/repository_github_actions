@@ -1,0 +1,51 @@
+name: Pruebas y Calidad de Código
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configurar Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Instalar dependencias
+      run: npm ci
+
+    - name: Verificar formato de código
+      run: npm run lint
+
+    - name: Ejecutar pruebas
+      run: npm test
+
+    - name: Generar reporte de cobertura
+      run: npm run test:coverage
+
+    - name: Subir reporte de cobertura
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: coverage/
+        retention-days: 7
+
+    - name: Comprobar umbral de cobertura
+      run: |
+        COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "La cobertura ($COVERAGE%) está por debajo del 80% requerido"
+          exit 1
+        fi
