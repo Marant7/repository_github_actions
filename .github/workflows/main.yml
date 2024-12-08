@@ -12,19 +12,21 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]  # Actualizado para incluir Node.js 20.x
+        node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3  # Actualizado a v3
+    - uses: actions/checkout@v3
 
     - name: Configurar Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3  # Actualizado a v3
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
     - name: Instalar dependencias
-      run: npm ci
+      run: |
+        npm ci
+        npm install --save-dev eslint-config-airbnb-base eslint-plugin-import
 
     - name: Verificar formato de código
       run: npm run lint
@@ -36,7 +38,7 @@ jobs:
       run: npm run test:coverage
 
     - name: Subir reporte de cobertura
-      uses: actions/upload-artifact@v3  # Actualizado a v3
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: coverage/
